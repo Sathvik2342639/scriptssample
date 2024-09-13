@@ -1,0 +1,38 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+ 
+jobs:
+  jmeter_job:
+    runs-on: ubuntu-latest
+    name: JMeter Test Execution
+    steps:      
+    - name: Checkout
+      uses: actions/checkout@v3
+ 
+    - name: Create reports directory
+      run: mkdir reports
+      
+    - name: Run JMeter Tests
+      uses: QAInsights/PerfAction@v5.6.2
+      with:
+        test-plan-path: ./KANTAR_URL.jmx
+        args: "-e -o ./reports/html/"
+        
+    - name: Upload Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: jmeter-results
+        path: result.jtl
+        if-no-files-found: error
+ 
+    - name: Upload HTML Reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: jmeter-reports
+        path: reports
+        if-no-files-found: error
