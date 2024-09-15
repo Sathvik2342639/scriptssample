@@ -23,7 +23,7 @@ jobs:
       uses: QAInsights/PerfAction@v5.6.2
       with:
         test-plan-path: ./API.jmx
-        args: "-e -o ./reports/html/"
+        args: "-JPath=api/users?page=3 -e -o ./reports/html/"
         
     - name: Upload Results
       uses: actions/upload-artifact@v3
